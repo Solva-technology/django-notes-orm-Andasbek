@@ -1,0 +1,37 @@
+{% extends 'notes/base.html' %}
+
+{% block title %}Заметки в категории {{ category|title }} | Заметки{% endblock %}
+
+{% block content %}
+<div class="mb-4">
+    <h1>Заметки в категории: {{ category|title }}</h1>
+    <a href="{% url 'notes:category_list' %}" class="btn btn-outline-secondary btn-sm">← Вернуться к списку категорий</a>
+</div>
+
+<div class="row">
+    {% for note in notes %}
+        <div class="col-md-6 col-lg-4 mb-4">
+            <div class="card h-100">
+                <div class="card-body">
+                    <h3 class="card-title"><a href="{% url 'notes:note_detail' note.id %}" class="text-decoration-none">{{ note.title }}</a></h3>
+                    {% if note.created_at %}
+                        <div class="mb-3">
+                            <small class="text-muted">{{ note.created_at }}</small>
+                        </div>
+                    {% endif %}
+                    <p class="card-text">{{ note.content|truncatewords:30 }}</p>
+                </div>
+                <div class="card-footer bg-white border-top-0">
+                    <a href="{% url 'notes:note_detail' note.id %}" class="btn btn-sm btn-outline-primary">Читать далее</a>
+                </div>
+            </div>
+        </div>
+    {% empty %}
+        <div class="col-12">
+            <div class="alert alert-info" role="alert">
+                В данной категории пока нет заметок.
+            </div>
+        </div>
+    {% endfor %}
+</div>
+{% endblock %}

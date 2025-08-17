@@ -1,0 +1,31 @@
+{% extends "notes/base.html" %}
+{% block title %}Все заметки{% endblock %}
+{% block content %}
+<h1 class="mb-4">Все заметки</h1>
+<div class="row g-3">
+  {% for n in notes %}
+    <div class="col-12">
+      <div class="card shadow-sm">
+        <div class="card-body">
+          <h5 class="card-title">
+            <a href="/notes/{{ n.id }}/" class="text-decoration-none">Заметка #{{ n.id }}</a>
+          </h5>
+          <p class="card-text">{{ n.text|default:"(пусто)"|truncatechars:100 }}</p>
+          <div class="d-flex flex-wrap gap-3 small text-muted">
+            <span>Автор: <a href="/users/{{ n.author.id }}/">{{ n.author.name }}</a> ({{ n.author.email }})</span>
+            <span>Статус: {{ n.status.name }}</span>
+            <span>Категории:
+              {% for c in n.categories.all %}
+                <span class="badge text-bg-secondary">{{ c.title }}</span>
+              {% empty %} — {% endfor %}
+            </span>
+            <span>Создано: {{ n.created_at|date:"Y-m-d H:i" }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  {% empty %}
+    <p>Пока нет заметок.</p>
+  {% endfor %}
+</div>
+{% endblock %}
