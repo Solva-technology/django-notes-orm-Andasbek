@@ -1,96 +1,320 @@
-# Работа с шаблонами и ORM
+# 🗒️ Django Notes ORM
 
-Этот этап — продолжение предыдущей работы. Предыдущая цель: настроить админку и локализацию.  
-Текущая цель — реализовать пользовательские страницы с выводом данных из базы через Django ORM и шаблоны.
+## 📖 Описание проекта
 
-**Важно:** необходимо переписать данный README файл — он должен содержать:
-- описание проекта;
-- инструкции по запуску (Docker + PostgreSQL);
-- примеры использования (ссылки на страницы);
-- структуру проекта (при необходимости).
-
----
-
-## Задание: Шаблоны и ORM в Django
-
-### Цель
-
-Научиться работать с шаблонами Django и выводить информацию из базы данных, используя ORM.  
-Разработать пользовательский интерфейс для просмотра данных из моделей проекта.
+**Django Notes ORM** — учебное веб-приложение для управления заметками, демонстрирующее:
+- Работу с **Django ORM** и оптимизацию запросов
+- Связи между моделями (ForeignKey, ManyToMany, OneToOne)
+- Использование `select_related` и `prefetch_related` для предотвращения N+1 проблемы
+- Шаблонную систему Django с наследованием
+- Контейнеризацию через Docker
+- Стилизацию интерфейса с **Bootstrap 5**
 
 ---
 
-## Задачи
+## 🚀 Функционал
 
-### 1. Главная страница: список всех заметок
+### Заметки
+- **Список заметок** (`/`) — все заметки с пагинацией, автором, статусом, категориями
+- **Детальная страница** (`/<id>/`) — полный текст, профиль автора, категории
+- **Создание** (`/create/`) — форма создания новой заметки
+- **Редактирование** (`/<id>/edit/`) — изменение существующей заметки
 
-- URL: `/` (главная страница).
-- Отображать список всех заметок (`Note`).
-- Для каждой заметки выводить:
-  - текст заметки (обрезать до 100 символов),
-  - имя автора,
-  - статус,
-  - список категорий,
-  - дату создания.
+### Пользователи
+- **Список пользователей** (`/users/`) — все пользователи с сортировкой по имени
+- **Профиль пользователя** (`/users/<id>/`) — информация, биография, заметки пользователя
 
-> Используйте `select_related` и `prefetch_related` для оптимизации запросов.
+### Категории
+- **Список категорий** (`/categories/`) — все категории с количеством заметок
+- **Заметки по категории** (`/categories/<id>/`) — фильтрация заметок
 
----
-
-### 2. Страница заметки (детальный просмотр)
-
-- URL: `/notes/<int:note_id>/`
-- Отображать:
-  - полный текст заметки,
-  - имя и email автора,
-  - биография и дата рождения автора,
-  - статус и отметку, является ли он финальным,
-  - категории.
+### Администрирование
+- **Админ-панель** (`/admin/`) — управление всеми сущностями
 
 ---
 
-### 3. Страница пользователя
+## 🛠 Технологии
 
-- URL: `/users/<int:user_id>/`
-- Отображать:
-  - имя пользователя,
-  - email,
-  - биография,
-  - дата рождения,
-  - список всех его заметок с указанием текста и статуса.
-
----
-
-### 4. Базовый шаблон
-
-- Создать базовый шаблон `base.html`.
-- Подключить Bootstrap или Tailwind CSS (по желанию).
-- Должен содержать header и footer
-- Все страницы наследуются от базового.
-- В шапке сайта — ссылки: "Главная", "Пользователи".
+- **Python 3.11**
+- **Django 5.2.7**
+- **PostgreSQL 16**
+- **Docker + Docker Compose**
+- **Bootstrap 5.3**
+- **Faker** для генерации тестовых данных
 
 ---
 
-## Технические требования
+## 📂 Структура проекта
 
-- Проект должен запускаться в Docker.
-- Используется PostgreSQL (контейнер `db`).
-- Есть файл с фикстурами.
-- Используется `docker-compose.yml` для запуска.
-- Все параметры (БД, язык, timezone и др.) вынесены в `.env`.
-- Все функции из предыдущего этапа (админка, локализация) должны остаться рабочими.
-- Адрес проекта: `http://localhost:8000/`
+```
+django-notes-orm-Andasbek/
+├── notes/                      # Основное приложение заметок
+│   ├── models.py               # User, UserProfile, Note, Status, Category
+│   ├── views.py                # Контроллеры для обработки запросов
+│   ├── urls.py                 # URL-маршруты
+│   ├── forms.py                # Формы Django
+│   ├── admin.py                # Настройка админ-панели
+│   └── templates/notes/        # Шаблоны заметок
+├── users/                      # Приложение пользователей
+│   ├── views.py                # Контроллеры для пользователей
+│   ├── urls.py                 # URL-маршруты пользователей
+│   └── templates/users/        # Шаблоны профилей
+├── templates/                  # Глобальные шаблоны
+│   ├── base.html               # Базовый шаблон
+│   └── includes/               # Header, footer
+├── static/                     # Статические файлы (CSS, JS, изображения)
+├── notebook_project/           # Настройки проекта
+│   ├── settings.py
+│   └── urls.py
+├── seed.py                     # Скрипт генерации тестовых данных
+├── docker-compose.yml
+├── Dockerfile
+├── requirements.txt
+├── .env                        # Переменные окружения (не в git!)
+└── manage.py
+```
 
 ---
 
-## Критерии выполнения
+## ⚙️ Установка и запуск
 
-- Главная страница отображает список заметок.
-- Реализована страница заметки по ID.
-- Реализована страница пользователя по ID.
-- Используется базовый шаблон.
-- Все данные выводятся через ORM (без `raw SQL`).
-- Используются `select_related` / `prefetch_related` где уместно.
-- Код оформлен чисто и понятно.
+### Требования
+- Docker Desktop
+- Git
+
+### 1. Клонировать репозиторий
+
+```bash
+git clone <repo_url>
+cd django-notes-orm-Andasbek
+```
+
+### 2. Создать файл `.env`
+
+```bash
+cat > .env << 'EOF'
+POSTGRES_DB=notes_db
+POSTGRES_USER=notes_user
+POSTGRES_PASSWORD=notes_pass
+POSTGRES_HOST=db
+POSTGRES_PORT=5432
+DJANGO_SUPERUSER_USERNAME=admin
+DJANGO_SUPERUSER_EMAIL=admin@example.com
+DJANGO_SUPERUSER_PASSWORD=admin
+LANGUAGE_CODE=ru
+TIME_ZONE=Asia/Almaty
+EOF
+```
+
+### 3. Запустить проект
+
+```bash
+# Собрать и запустить контейнеры
+docker compose up --build -d
+
+# Применить миграции
+docker compose exec web python manage.py migrate
+
+# Создать суперпользователя (автоматически из .env)
+docker compose exec web python manage.py createsuperuser --noinput
+
+# Заполнить БД тестовыми данными
+docker compose exec web python seed.py
+```
+
+### 4. Открыть приложение
+
+Проект доступен по адресу: **http://localhost:8000**
 
 ---
+
+## 🔗 Основные URL
+
+| Страница | URL | Описание |
+|----------|-----|----------|
+| Главная | `/` | Список всех заметок |
+| Создание заметки | `/create/` | Форма создания |
+| Детальная заметка | `/<id>/` | Полная информация о заметке |
+| Редактирование | `/<id>/edit/` | Изменение заметки |
+| Список пользователей | `/users/` | Все пользователи |
+| Профиль пользователя | `/users/<id>/` | Информация и заметки |
+| Список категорий | `/categories/` | Все категории |
+| Заметки категории | `/categories/<id>/` | Фильтр по категории |
+| Админ-панель | `/admin/` | Управление данными |
+
+**Вход в админку:** admin / admin
+
+---
+
+## 🐳 Управление Docker
+
+### Основные команды
+
+```bash
+# Запустить контейнеры
+docker compose up -d
+
+# Остановить контейнеры
+docker compose stop
+
+# Перезапустить контейнеры
+docker compose restart
+
+# Остановить и удалить (данные сохраняются)
+docker compose down
+
+# Удалить всё включая БД
+docker compose down -v
+
+# Посмотреть логи
+docker compose logs -f web
+```
+
+### Django команды
+
+```bash
+# Создать миграции
+docker compose exec web python manage.py makemigrations
+
+# Применить миграции
+docker compose exec web python manage.py migrate
+
+# Django shell
+docker compose exec web python manage.py shell
+
+# Собрать статику
+docker compose exec web python manage.py collectstatic --noinput
+
+# Проверить проект
+docker compose exec web python manage.py check
+```
+
+### Работа с PostgreSQL
+
+```bash
+# Подключиться к БД
+docker compose exec db psql -U notes_user -d notes_db
+
+# Внутри psql:
+\dt              # список таблиц
+\d notes_note    # структура таблицы
+\q               # выход
+```
+
+---
+
+## 📊 Модели данных
+
+### User
+- `name` — имя пользователя
+- `email` — email (уникальный)
+
+### UserProfile (OneToOne с User)
+- `bio` — биография
+- `birth_date` — дата рождения
+
+### Note
+- `text` — текст заметки
+- `author` — ForeignKey на User
+- `status` — ForeignKey на Status
+- `categories` — ManyToMany с Category
+- `created_at` — дата создания
+
+### Status
+- `name` — название статуса
+- `is_final` — финальный статус или нет
+
+### Category
+- `title` — название категории
+
+---
+
+## 🎯 Особенности реализации
+
+### Оптимизация запросов
+Используются `select_related` и `prefetch_related` для минимизации SQL-запросов:
+
+```python
+Note.objects.select_related('author', 'status').prefetch_related('categories')
+```
+
+### Пагинация
+Список заметок разбит на страницы по 10 элементов с помощью `Paginator`.
+
+### Формы Django
+Создание и редактирование заметок через `ModelForm` с валидацией.
+
+### Сообщения
+Использование `django.contrib.messages` для уведомлений пользователя.
+
+---
+
+## 🧪 Тестирование
+
+```bash
+# Запустить тесты
+docker compose exec web python manage.py test
+
+# Проверить количество SQL-запросов
+docker compose exec web python manage.py shell
+```
+
+```python
+from django.db import connection, reset_queries
+from notes.models import Note
+
+reset_queries()
+notes = list(Note.objects.select_related('author', 'status').prefetch_related('categories')[:10])
+for n in notes:
+    print(n.author.name, n.status.name, [c.title for c in n.categories.all()])
+
+print(f"SQL запросов: {len(connection.queries)}")  # Должно быть 3-5
+```
+
+---
+
+## 📝 Полезные команды
+
+```bash
+# Очистить кеш Python
+docker compose exec web find . -type d -name __pycache__ -exec rm -r {} +
+
+# Пересоздать БД с нуля
+docker compose down -v
+docker compose up -d
+docker compose exec web python manage.py migrate
+docker compose exec web python seed.py
+
+# Экспортировать данные
+docker compose exec web python manage.py dumpdata > backup.json
+
+# Импортировать данные
+docker compose exec web python manage.py loaddata backup.json
+```
+
+---
+
+## 🚧 Возможные улучшения
+
+- [ ] REST API через Django REST Framework
+- [ ] Аутентификация и регистрация пользователей
+- [ ] Поиск по заметкам
+- [ ] Фильтры по статусу и дате
+- [ ] Экспорт заметок в PDF/Markdown
+- [ ] Прикрепление файлов к заметкам
+- [ ] Тесты покрытия (coverage)
+- [ ] CI/CD pipeline
+- [ ] Деплой на Heroku/DigitalOcean
+
+---
+
+## 👨‍💻 Автор
+
+**Andas Kazybek**
+
+
+---
+
+## 📄 Лицензия
+
+MIT License

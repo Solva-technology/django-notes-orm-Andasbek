@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block title %}Заметка #{{ note.id }}{% endblock %}
+{% block content %}
+<h1 class="mb-3">Заметка #{{ note.id }}</h1>
+<p class="lead">{{ note.text|default:"(пусто)" }}</p>
+
+<ul class="list-group mb-4">
+  <li class="list-group-item"><strong>Автор:</strong> <a href="{% url 'users:user_detail' note.author.id %}">{{ note.author.name }}</a> ({{ note.author.email }})</li>
+  <li class="list-group-item"><strong>Профиль:</strong>
+    {% if profile %}
+      био — {{ profile.bio|default:"—" }},
+      дата рождения — {{ profile.birth_date|date:"Y-m-d"|default:"—" }}
+    {% else %}
+      — 
+    {% endif %}
+  </li>
+  <li class="list-group-item"><strong>Статус:</strong> {{ note.status.name }} (финальный: {{ note.status.is_final|yesno:"да,нет" }})</li>
+  <li class="list-group-item"><strong>Категории:</strong>
+    {% for c in note.categories.all %}
+      <span class="badge text-bg-secondary">{{ c.title }}</span>
+    {% empty %} — {% endfor %}
+  </li>
+  <li class="list-group-item"><strong>Создано:</strong> {{ note.created_at|date:"Y-m-d H:i" }}</li>
+</ul>
+<a href="{% url 'notes:index' %}" class="btn btn-outline-primary">← Ко всем заметкам</a>
+<a href="{% url 'notes:note_edit' note.id %}" class="btn btn-primary">Редактировать</a>
+{% endblock %}

@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Главная | Заметки{% endblock %}
+
+{% block content %}
+<div class="text-center mb-5">
+    <img src="{% static 'notes/images/logo.svg' %}" alt="Логотип Заметки" class="img-fluid mb-4" style="max-width: 150px;">
+    <h1 class="display-4">Добро пожаловать в приложение заметок!</h1>
+    <p class="lead">Здесь вы можете хранить и организовывать свои заметки по категориям.</p>
+    
+    <div class="mt-4">
+        <a href="{% url 'notes:index' %}" class="btn btn-primary me-2">
+            Просмотреть все заметки
+        </a>
+        <a href="{% url 'notes:category_list' %}" class="btn btn-secondary">
+            Просмотреть категории
+        </a>
+    </div>
+</div>
+    
+<div class="row mt-5">
+    <div class="col-md-4 mb-4">
+        <div class="card h-100">
+            <div class="card-body">
+                <h3 class="card-title">Организация</h3>
+                <p class="card-text">Организуйте свои заметки по категориям для легкого доступа.</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4 mb-4">
+        <div class="card h-100">
+            <div class="card-body">
+                <h3 class="card-title">Доступность</h3>
+                <p class="card-text">Получайте доступ к своим заметкам в любое время и с любого устройства.</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4 mb-4">
+        <div class="card h-100">
+            <div class="card-body">
+                <h3 class="card-title">Простота</h3>
+                <p class="card-text">Интуитивно понятный интерфейс для легкого создания и редактирования заметок.</p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
