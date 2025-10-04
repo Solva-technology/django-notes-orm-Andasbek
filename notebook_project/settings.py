@@ -1,15 +1,29 @@
-import os
+# Standard library
 from pathlib import Path
+import os
+
+# Third-party
 from dotenv import load_dotenv
+
+# Django
+from django.core.management.utils import get_random_secret_key
 
 load_dotenv()
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-SECRET_KEY = os.getenv('DJANGO_SECRET_KEY', 'dev-secret')
-DEBUG = os.getenv('DJANGO_DEBUG', '0') == '1'
-ALLOWED_HOSTS = os.getenv('DJANGO_ALLOWED_HOSTS', 'localhost,127.0.0.1').split(',')
+SECRET_KEY = os.getenv('DJANGO_SECRET_KEY') or get_random_secret_key()
+DEBUG = os.getenv("DJANGO_DEBUG", "0").strip().lower() in {"1", "true", "yes", "on"}
 
-LANGUAGE_CODE = os.getenv('DJANGO_LANGUAGE_CODE', 'ru')
+_raw_hosts = os.getenv("DJANGO_ALLOWED_HOSTS", "").strip()
+
+ALLOWED_HOSTS = ['*']  # для разработки
+
+LANGUAGE_CODE = os.getenv('DJANGO_LANGUAGE_CODE', 'ru-ru')
+LANGUAGES = [
+    ('ru-ru', 'Русский'),
+    ('en-us', 'English'),
+]
+
 TIME_ZONE = os.getenv('DJANGO_TIME_ZONE', 'Asia/Almaty')
 USE_I18N = True
 USE_TZ = True
@@ -22,6 +36,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'notes',
+    'users',
 ]
 
 MIDDLEWARE = [

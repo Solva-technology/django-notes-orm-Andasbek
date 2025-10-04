@@ -1,4 +1,4 @@
-{% extends "notes/base.html" %}
+{% extends "base.html" %}
 {% block title %}Пользователь {{ user.name }}{% endblock %}
 {% block content %}
 <h1 class="mb-3">{{ user.name }}</h1>
@@ -19,7 +19,7 @@
   {% for n in notes %}
     <li class="list-group-item d-flex justify-content-between align-items-start">
       <div>
-        <a href="{% url 'note_detail' n.id %}" class="fw-semibold">Заметка #{{ n.id }}</a>
+        <a href="{% url 'notes:note_detail' n.id %}" class="fw-semibold">Заметка #{{ n.id }}</a>
         <div class="small text-muted">{{ n.text|truncatechars:100 }}</div>
       </div>
       <span class="badge text-bg-info">{{ n.status.name }}</span>
@@ -28,4 +28,8 @@
     <li class="list-group-item">Заметок нет.</li>
   {% endfor %}
 </ul>
+
+<div class="mt-4">
+  <a href="{% url 'users:user_list' %}" class="btn btn-outline-primary">← Все пользователи</a>
+</div>
 {% endblock %}

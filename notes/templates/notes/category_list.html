@@ -1,4 +1,4 @@
-{% extends 'notes/base.html' %}
+{% extends 'base.html' %}
 
 {% block title %}Категории | Заметки{% endblock %}
 
@@ -10,10 +10,11 @@
         <div class="col-md-4 mb-4">
             <div class="card h-100">
                 <div class="card-body">
-                    <h3 class="card-title">{{ category|title }}</h3>
+                    <h3 class="card-title">{{ category.title }}</h3>
+                    <p class="text-muted">Заметок: {{ category.notes.count }}</p>
                 </div>
                 <div class="card-footer bg-white border-top-0">
-                    <a href="{% url 'notes:category_notes' category %}" class="btn btn-primary">Просмотреть заметки</a>
+                    <a href="{% url 'notes:category_notes' category.id %}" class="btn btn-primary">Просмотреть заметки</a>
                 </div>
             </div>
         </div>

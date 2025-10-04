@@ -1,4 +1,4 @@
-{% extends 'notes/base.html' %}
+{% extends 'base.html' %}
 {% load static %}
 
 {% block title %}Главная | Заметки{% endblock %}
@@ -10,7 +10,7 @@
     <p class="lead">Здесь вы можете хранить и организовывать свои заметки по категориям.</p>
     
     <div class="mt-4">
-        <a href="{% url 'notes:all_notes' %}" class="btn btn-primary me-2">
+        <a href="{% url 'notes:index' %}" class="btn btn-primary me-2">
             Просмотреть все заметки
         </a>
         <a href="{% url 'notes:category_list' %}" class="btn btn-secondary">

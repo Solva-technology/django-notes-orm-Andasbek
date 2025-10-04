@@ -1,4 +1,4 @@
-{% extends "notes/base.html" %}
+{% extends "base.html" %}
 {% block title %}Пользователи{% endblock %}
 {% block content %}
 <h1 class="mb-4">Пользователи</h1>
@@ -6,7 +6,7 @@
   {% for u in users %}
     <li class="list-group-item d-flex justify-content-between align-items-center">
       <div>
-        <a href="/users/{{ u.id }}/" class="fw-semibold">{{ u.name }}</a>
+        <a href="{% url 'users:user_detail' u.id %}" class="fw-semibold">{{ u.name }}</a>
         <div class="small text-muted">{{ u.email }}</div>
       </div>
       <span class="badge text-bg-secondary">ID {{ u.id }}</span>

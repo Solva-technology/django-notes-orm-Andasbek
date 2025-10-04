@@ -1,0 +1,9 @@
+<header class="py-3 mb-4 border-bottom bg-white shadow-sm">
+  <div class="container d-flex flex-wrap justify-content-between align-items-center">
+    <a href="{% url 'notes:list' %}" class="navbar-brand fw-bold">Notes</a>
+    <nav class="nav gap-3">
+      <a class="nav-link" href="{% url 'notes:list' %}">Главная</a>
+      <a class="nav-link" href="{% url 'users:list' %}">Пользователи</a>
+    </nav>
+  </div>
+</header>

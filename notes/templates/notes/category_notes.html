@@ -1,10 +1,10 @@
-{% extends 'notes/base.html' %}
+{% extends 'base.html' %}
 
-{% block title %}Заметки в категории {{ category|title }} | Заметки{% endblock %}
+{% block title %}Заметки в категории {{ category.title }} | Заметки{% endblock %}
 
 {% block content %}
 <div class="mb-4">
-    <h1>Заметки в категории: {{ category|title }}</h1>
+    <h1>Заметки в категории: {{ category.title }}</h1>
     <a href="{% url 'notes:category_list' %}" class="btn btn-outline-secondary btn-sm">← Вернуться к списку категорий</a>
 </div>
 
@@ -13,13 +13,17 @@
         <div class="col-md-6 col-lg-4 mb-4">
             <div class="card h-100">
                 <div class="card-body">
-                    <h3 class="card-title"><a href="{% url 'notes:note_detail' note.id %}" class="text-decoration-none">{{ note.title }}</a></h3>
-                    {% if note.created_at %}
-                        <div class="mb-3">
-                            <small class="text-muted">{{ note.created_at }}</small>
-                        </div>
-                    {% endif %}
-                    <p class="card-text">{{ note.content|truncatewords:30 }}</p>
+                    <h3 class="card-title">
+                        <a href="{% url 'notes:note_detail' note.id %}" class="text-decoration-none">
+                            Заметка #{{ note.id }}
+                        </a>
+                    </h3>
+                    <div class="mb-3">
+                        <small class="text-muted">{{ note.created_at|date:"d.m.Y H:i" }}</small>
+                        <br>
+                        <small class="text-muted">Автор: {{ note.author.name }}</small>
+                    </div>
+                    <p class="card-text">{{ note.text|truncatewords:30 }}</p>
                 </div>
                 <div class="card-footer bg-white border-top-0">
                     <a href="{% url 'notes:note_detail' note.id %}" class="btn btn-sm btn-outline-primary">Читать далее</a>

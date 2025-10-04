@@ -1,18 +1,24 @@
-{% extends "notes/base.html" %}
+{% extends "base.html" %}
 {% block title %}Все заметки{% endblock %}
+
 {% block content %}
 <h1 class="mb-4">Все заметки</h1>
+
+<div class="mb-3">
+  <a href="{% url 'notes:note_create' %}" class="btn btn-success">+ Новая заметка</a>
+</div>
+
 <div class="row g-3">
-  {% for n in notes %}
+  {% for n in page_obj %}
     <div class="col-12">
       <div class="card shadow-sm">
         <div class="card-body">
-          <h5 class="card-title">
-            <a href="/notes/{{ n.id }}/" class="text-decoration-none">Заметка #{{ n.id }}</a>
+          <h5 class="card-title mb-2">
+            <a href="{% url 'notes:note_detail' n.id %}" class="text-decoration-none">Заметка #{{ n.id }}</a>
           </h5>
           <p class="card-text">{{ n.text|default:"(пусто)"|truncatechars:100 }}</p>
           <div class="d-flex flex-wrap gap-3 small text-muted">
-            <span>Автор: <a href="/users/{{ n.author.id }}/">{{ n.author.name }}</a> ({{ n.author.email }})</span>
+            <span>Автор: <a href="{% url 'users:user_detail' n.author.id %}">{{ n.author.name }}</a> ({{ n.author.email }})</span>
             <span>Статус: {{ n.status.name }}</span>
             <span>Категории:
               {% for c in n.categories.all %}
@@ -28,4 +34,60 @@
     <p>Пока нет заметок.</p>
   {% endfor %}
 </div>
+
+{# Пагинация (Bootstrap) #}
+{% if page_obj.paginator.num_pages > 1 %}
+<nav aria-label="Навигация по страницам">
+  <ul class="pagination justify-content-center mt-4">
+
+    {# Назад #}
+    {% if page_obj.has_previous %}
+      <li class="page-item">
+        <a class="page-link" href="?page={{ page_obj.previous_page_number }}">← Назад</a>
+      </li>
+    {% else %}
+      <li class="page-item disabled"><span class="page-link">← Назад</span></li>
+    {% endif %}
+
+    {# Первая страница #}
+    {% if page_obj.number > 3 %}
+      <li class="page-item"><a class="page-link" href="?page=1">1</a></li>
+      {% if page_obj.number > 4 %}
+        <li class="page-item disabled"><span class="page-link">…</span></li>
+      {% endif %}
+    {% endif %}
+
+    {# Окно страниц вокруг текущей #}
+    {% for num in page_obj.paginator.page_range %}
+      {% if num >= page_obj.number|add:"-2" and num <= page_obj.number|add:"2" %}
+        {% if num == page_obj.number %}
+          <li class="page-item active"><span class="page-link">{{ num }}</span></li>
+        {% else %}
+          <li class="page-item"><a class="page-link" href="?page={{ num }}">{{ num }}</a></li>
+        {% endif %}
+      {% endif %}
+    {% endfor %}
+
+    {# Последняя страница #}
+    {% if page_obj.number < page_obj.paginator.num_pages|add:"-2" %}
+      <li class="page-item disabled"><span class="page-link">…</span></li>
+    {% endif %}
+    {% if page_obj.number < page_obj.paginator.num_pages|add:"-1" %}
+      <li class="page-item">
+        <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}">{{ page_obj.paginator.num_pages }}</a>
+      </li>
+    {% endif %}
+
+    {# Вперёд #}
+    {% if page_obj.has_next %}
+      <li class="page-item">
+        <a class="page-link" href="?page={{ page_obj.next_page_number }}">Вперёд →</a>
+      </li>
+    {% else %}
+      <li class="page-item disabled"><span class="page-link">Вперёд →</span></li>
+    {% endif %}
+
+  </ul>
+</nav>
+{% endif %}
 {% endblock %}
